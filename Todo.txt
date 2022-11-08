@@ -1,0 +1,5 @@
+create an array list of todos
+able to delete a todo
+line through when completed
+add a todo
+check if high demand

@@ -1,15 +1,34 @@
 <template>
   <div class="container">
 
-    <form @submit.prevent="addTodo" class="form">
+    <form @submit.prevent class="form">
       <input class="form__input-text" v-model="newTodo" type="text" name="new-todo" id="NewTodo" placeholder="Enter new todo">
-      <button class="form__btn" type="submit">Add todo</button>
+      <button 
+        class="form__btn" 
+        type="submit" 
+        :disabled="newTodo.length === 0"
+        @click="addTodo"
+        >
+        Add todo
+      </button>
 
     <ul class="menu">
-      <li class="menu__item" v-for="{text, id} in todos" :key="id">{{ text }}</li>
+      <li class="menu__item" 
+        v-for="todo, index in todos" 
+        :key="todo.id"
+        >
+        {{index}}
+        {{ todo.text }} 
+      </li>
     </ul>
-    </form>
 
+
+      <div class="delTask">
+        <input v-model="numToDel" type="text" id="delByNum">
+        {{numToDel}}
+        <button @click="delTodo(index)">del</button>
+      </div>
+    </form>
 
   </div>
 </template>
@@ -19,25 +38,26 @@ import { ref } from 'vue';
 
 const todos = ref([
   {
-    id: 'todo1',
+    id: 0,
     text: 'i will go to school'
   },
   {
-    id: 'todo2',
+    id: 1,
     text: 'i will go to church'
   },
   {
-    id: 'todo3',
+    id: 2,
     text: 'i will go home'
   },
   {
-    id: 'todo4',
+    id: 3,
     text: 'i will do my homework'
   }
 ])
 
-
+const numToDel = ref()
 const newTodo = ref('')
+const index = Number(numToDel.value)
 
 const addTodo = ()=>{
   
@@ -45,9 +65,24 @@ const addTodo = ()=>{
   newTodo.value = ""
 }
 
-// const delTodo = () =>{
-//   todos.value.pop()
+// const delTodo = (index) =>{
+//   if (typeof index !== "number"){
+//     alert('Its not a number')
+//   } else if (todos.value.length > index){
+//     alert('Number of tasks are less than the input')
+//   } else{
+//     todos.value.splice(index, 1)
+//   }
 // }
+const delTodo = (index) =>{
+  if (isNaN(index)){
+    alert('Its not a number')
+  } else if (todos.value.length < index){
+    alert('Number of tasks are less than the input')
+  } else{
+    todos.value.splice(index, 1)
+  }
+}
 
 </script>
 
@@ -65,7 +100,6 @@ const addTodo = ()=>{
     transform: translate(-50%, -50%);
     border: 1px solid red;
     padding: 50px;
-    backdrop-filter: blur(10px);
 
     &__input-text{
       outline: none;
@@ -101,6 +135,10 @@ const addTodo = ()=>{
       &:hover{
         box-shadow: none;
       }
+    }
+
+    .delTask{
+      margin-top: 2rem;
     }
   }
 }

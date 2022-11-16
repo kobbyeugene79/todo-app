@@ -26,7 +26,7 @@
       <div class="delTask">
         <input v-model="numToDel" type="text" id="delByNum">
         {{numToDel}}
-        <button @click="delTodo(index)">del</button>
+        <button @click="delTodo">del</button>
       </div>
     </form>
 
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const todos = ref([
   {
@@ -55,9 +55,9 @@ const todos = ref([
   }
 ])
 
-const numToDel = ref()
+const numToDel = ref('')
 const newTodo = ref('')
-const index = Number(numToDel.value)
+// const index = Number(numToDel)
 
 const addTodo = ()=>{
   
@@ -65,24 +65,29 @@ const addTodo = ()=>{
   newTodo.value = ""
 }
 
-// const delTodo = (index) =>{
-//   if (typeof index !== "number"){
+const index = computed(() => Number(numToDel))
+// const delTodo = () =>{
+//   if (typeof index.value !== "number"){
 //     alert('Its not a number')
-//   } else if (todos.value.length > index){
+//   } else if (todos.value.length > index.value){
 //     alert('Number of tasks are less than the input')
 //   } else{
-//     todos.value.splice(index, 1)
+//     todos.value.splice(index.value, 1)
 //   }
 // }
-const delTodo = (index) =>{
-  if (isNaN(index)){
+
+
+const delTodo = () =>{
+  if (isNaN(index.value)){
     alert('Its not a number')
-  } else if (todos.value.length < index){
+  } else if (todos.value.length < index.value){
     alert('Number of tasks are less than the input')
   } else{
-    todos.value.splice(index, 1)
+    todos.value.splice(index.value, 1)
   }
 }
+
+
 
 </script>
 

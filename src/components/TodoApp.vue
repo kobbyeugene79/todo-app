@@ -33,11 +33,19 @@
             autocomplete="off"
             placeholder="Enter index of task to delete"
             >
+
           <button 
             @click="delTodo" 
             :disabled="numToDel.length === 0"
             class="btn btn--del"
             >Delete
+          </button>
+
+          <button 
+            class="btn btn--del"
+            @click="clearDoneTasks"
+            >
+            Clear done tasks
           </button>
         </div>
       </div>
@@ -47,6 +55,8 @@
         <ul class="list__menu">
           <li class="list__menu__item" 
             v-for="todo in todos" 
+            @click="toggleDoneTask(todo)"
+            :class="{strickThrough: todo.taskDone}"
             :key="todo.id"
             >
             {{ todo.text }} 
@@ -66,19 +76,23 @@ import { ref, computed } from 'vue';
 const todos = ref([
   {
     id: 0,
-    text: 'i will go to school'
+    text: 'I will go to school',
+    taskDone: false,
   },
   {
     id: 1,
-    text: 'i will go to church'
+    text: 'I will go to church',
+    taskDone: true,
   },
   {
     id: 2,
-    text: 'i will go home'
+    text: 'I will go home',
+    taskDone: false,
   },
   {
     id: 3,
-    text: 'i will do my homework'
+    text: 'I will do my homework',
+    taskDone: false,
   }
 ])
 
@@ -94,9 +108,17 @@ const addTodo = ()=>{
   }
 }
 
+const toggleDoneTask = (todo) => {
+  todo.taskDone = !todo.taskDone
+}
+
+const clearDoneTasks = () => {
+  todos.value.filter((todo) => {
+    return todo.taskDone === true
+  })
+}
+
 const index = computed(() => Number(numToDel.value) - 1)
-
-
 
 const delTodo = () =>{
   if (isNaN(index.value)){
@@ -221,6 +243,7 @@ $btn-color: #2414d4f3;
      
         &--del{
           background: #f03f3f;
+          margin: 0.5rem 0;
         }
         &:hover{
           box-shadow: none;
@@ -249,12 +272,20 @@ $btn-color: #2414d4f3;
         &__item{
           list-style-type: decimal;
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: .2s;
         }
+        .strickThrough{
+            text-decoration: line-through;
+            font-weight: 700;
+          }
       }
     }
 
     .delTask{
-      margin-top: 2rem;
+      margin: 1rem 0;
+
+
     }
   }
 }

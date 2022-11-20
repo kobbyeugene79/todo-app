@@ -103,7 +103,7 @@ const addTodo = ()=>{
   if (todos.value.length >= 11){
     alert('Please delete some tasks before adding a new one')
   } else{
-    todos.value.push({id: todos.value.length + 1, text: newTodo.value})
+    todos.value.push({id: todos.value.length + 1, text: newTodo.value, taskDone: false})
     newTodo.value = ""
   }
 }
@@ -114,7 +114,7 @@ const toggleDoneTask = (todo) => {
 
 const clearDoneTasks = () => {
   todos.value.filter((todo) => {
-    return todo.taskDone === true
+    return todo.taskDone !== true
   })
 }
 
